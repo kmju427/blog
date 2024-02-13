@@ -15,6 +15,9 @@
 						
 						<%-- 이미지에 마우스를 올리면 마우스 커서가 변하도록 적용 --%>
 						<a href="#" id="fileUploadBtn" class="mt-2 mb-2"><img id="profileImage" width="65" src="https://cdn.pixabay.com/photo/2017/07/11/13/56/user-2493635_1280.png"></a>
+						
+						<%-- 업로드된 임시 이미지 파일 이름 나타내는 곳 --%>
+						<div id="fileName" class="ml-2"></div>
 					</div>
 				</div>
 			</div>
@@ -60,6 +63,12 @@
 				<button type="button" id="nicknameCheckBtn" class="btn ml-2">중복 확인</button>
 			</div>
 			
+			<%-- 닉네임 체크 결과 --%>
+			<div class="ml-3 mt-2 mb-2">
+				<div id="nickCheckDuplicated" class="small text-danger d-none">이미 사용 중인 닉네임입니다.</div>
+				<div id="nickCheckOk" class="small text-success d-none">사용 가능한 닉네임입니다.</div>
+			</div>
+			
 			<br>
 			<div class="d-flex justify-content-center m-2">
 				<button type="submit" id="signUpBtn" class="btn">가입하기</button>
@@ -70,6 +79,63 @@
 
 <script>
 	$(document).ready(function() {
+		// 아이디 중복 확인
+		$("#loginIdCheckBtn").on('click', function() {
+			// alert("중복 확인");
+			
+			// 문구 초기화
+			$("#idCheckLength").addClass("d-none");
+			$("#idCheckDuplicated").addClass("d-none");
+			$("#idCheckOk").addClass("d-none");
+			
+			let loginId = $("#loginId").val().trim();
+			if (loginId.length < 4) {
+				$("#idCheckLength").removeClass("d-none");
+				return;
+			}
+			
+			$.get("/user/is-duplicated-id", {"loginId":loginId}) // request
+			.done(function(data) { // response
+				if (data.code == 200) {
+					if (data.is_duplicated_id) { // 중복
+						$("#idCheckDuplicated").removeClass("d-none");
+					} else { // 사용 가능
+						$("#idCheckOk").removeClass("d-none");
+					}
+				} else {
+					alert("아이디 중복 확인에 실패하였습니다.");
+				}
+			});
+		});
+		
+		// 닉네임 중복 확인
+		$("#nicknameCheckBtn").on('click', function() {
+			// alert("닉네임 중복 확인");
+			
+			// 문구 초기화
+			$("#nickCheckDuplicated").addClass("d-none");
+			$("#nickCheckOk").addClass("d-none");
+			
+			let nickname = $("input[name=nickname]").val().trim();
+			if (nickname.length < 1) {
+				alert("단어 1개 이상 적으셔야 중복 확인을 할 수 있습니다.");
+				return;
+			}
+			
+			$.get("/user/is-duplicated-nickname", {"nickname":nickname})
+			.done(function(data) {
+				if (data.code == 200) {
+					if (data.is_duplicated_nickname) { // 중복
+						$("#nickCheckDuplicated").removeClass("d-none");
+					} else { // 사용 가능
+						$("#nickCheckOk").removeClass("d-none");
+					}
+				} else {
+					alert("닉네임 중복 확인에 실패하였습니다.");
+				}
+			});
+		});
+		
 		// 파일 업로드 이미지 클릭 -> 숨겨져 있는 id="file" 동작시킨다.
 		$("#fileUploadBtn").on('click', function(e) {
 			e.preventDefault(); // a 태그의 기본 동작을 멈춤(스크롤 위로 올라가는 것)
@@ -84,6 +150,7 @@
 			let file = e.target.files[0];
 			if (file == null) {
 				$("#file").val(""); // 파일 태그 파일 제거(보이지 않지만 업로드될 수 있으므로 주의)
+				$("#fileName").text(""); // 보여지는 파일명 비우기
 				return;
 			}
 			
@@ -97,8 +164,12 @@
 			if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "gif") {
 				alert("이미지 파일만 업로드할 수 있습니다.");
 				$("#file").val(""); // 파일 태그 파일 제거(보이지 않지만 업로드될 수 있으므로 주의)
+				$("#fileName").text(""); // 보여지는 파일명 비우기
 				return;
 			}
+			
+			// 유효성 통과한 이미지의 경우 파일명 노출
+			$("#fileName").text(fileName);
 		});
 		
 		// 회원가입
@@ -113,6 +184,7 @@
 			let name = $("input[name=name]").val().trim();
 			let email = $("input[name=email]").val().trim();
 			let nickname = $("input[name=nickname]").val().trim();
+			let fileName = $("#file").val();
 			
 			if (!loginId) {
 				alert("아이디를 입력해주세요.");
@@ -142,6 +214,52 @@
 			if (!nickname) {
 				alert("닉네임을 입력해주세요.");
 			}
+			
+			// 파일이 업로드된 경우에만 확장자 체크
+			if (fileName) {
+				// C:\fakepath\cortina-dampezzo-8504755_640.jpg
+				// 확장자만 뽑은 후 소문자로 변경해서 검사한다.
+				let ext = fileName.split(".").pop().toLowerCase();
+			
+				if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "gif") {
+					alert("이미지 파일만 업로드할 수 있습니다.");
+					$("#file").val(""); // 파일 태그 파일 제거(보이지 않지만 업로드될 수 있으므로 주의)
+					$("#fileName").text(""); // 보여지는 파일명 비우기
+					return;
+				}
+			}
+			
+			// 이미지를 업로드할 때는 반드시 form 태그로 구성한다.
+			let formData = new FormData();
+			formData.append("loginId", loginId);
+			formData.append("password", password);
+			formData.append("name", name);
+			formData.append("email", email);
+			formData.append("nickname", nickname);
+			formData.append("file", $("#file")[0].files[0]);
+			
+			$.ajax({
+				// request
+				type:"POST"
+				, url:"/user/sign-up"
+				, data:formData
+				, enctype:"multipart/form-data" // 파일 업로드를 위한 필수 설정
+				, processData:false // 파일 업로드를 위한 필수 설정
+				, contentType:false // 파일 업로드를 위한 필수 설정
+				
+				// response
+				, success:function(data) {
+					if (data.code == 200) {
+						alert("회원가입이 완료되었습니다.");
+						location.href = "/user/sign-in-view"; // 로그인 화면으로 이동
+					} else if (data.code == 500) {
+						alert(data.error_message);
+					}
+				}
+				, error:function(request, status, error) {
+					alert("회원가입에 문제가 생겼습니다. 관리자에게 문의해주세요.");
+				}
+			});
 		});
 	});
 </script>

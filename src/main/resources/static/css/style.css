@@ -22,9 +22,24 @@ header {height:50px; background-color:#FFFF96;}
 }
 .sign-up-subject {margin:20px; font-weight:bold;}
 
+.sign-in-box {
+	width:650px; 
+	min-height:300px; 
+	margin-top:30px; 
+	background-color:#FDF5E6;
+	border-radius: 30px;
+}
+.sign-in-boxs {
+	margin:0 auto;
+}
+.sign-in-subject {margin:20px; font-weight:bold;}
+
 .profile {display:flex;}
 .profile-box {margin:auto; text-align:center;}
 .profile-span {font-size:22px; font-weight:bold; margin-bottom:15px;}
 
+.login {margin:auto; text-align:center;}
+
 #loginIdCheckBtn, #nicknameCheckBtn {background-color:#4BAF4B; color:white;}
 #signUpBtn {background-color:#0078FF; color:white;}
+#loginBtn {background-color:#0078FF; color:white;}
