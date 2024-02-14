@@ -111,6 +111,13 @@ public class UserRestController {
 		return result;
 	}
 	
+	/**
+	 * 로그인 API
+	 * @param loginId
+	 * @param password
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,
@@ -130,6 +137,7 @@ public class UserRestController {
 			HttpSession session = request.getSession();
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
+			session.setAttribute("userName", user.getName());
 			session.setAttribute("userNickname", user.getNickname());
 			
 			result.put("code", 200);
@@ -138,6 +146,27 @@ public class UserRestController {
 			result.put("code", 500);
 			result.put("error_message", "존재하지 않는 사용자입니다.");
 		}
+		
+		return result;
+	}
+	
+	@PostMapping("/data-modify")
+	public Map<String, Object> dataModify(
+			@RequestParam("password") String password,
+			@RequestParam("email") String email,
+			@RequestParam("nickname") String nickname,
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			HttpSession session) {
+		// 세션에서 필요한 데이터 꺼내기
+		int userId = (int)session.getAttribute("userId");
+		String userLoginId = (String)session.getAttribute("userLoginId");
+		
+		// DB update
+		// userBO.;
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
 		
 		return result;
 	}

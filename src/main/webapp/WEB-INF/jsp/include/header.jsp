@@ -9,25 +9,28 @@
 	
 	<%-- 블로그 이동 및 로그인 or 로그아웃--%>
 	<div class="d-flex">
-		<div class="mr-2">
-			<a href="#">내 블로그</a>
+		<div class="d-flex">
+			<a href="#" class="header-subject">내 블로그</a>
+			<div class="verticalLine">|</div>
 		</div>
 		
-		<div class="mr-2">
-			<a href="#">블로그 홈</a>
+		<div class="d-flex">
+			<a href="#" class="header-subject">블로그 홈</a>
+			<div class="verticalLine">|</div>
 		</div>
 		
 		<%-- 로그인, 로그아웃 상태 여부 --%>
 		<c:if test="${not empty userId}">
-			<div class="mr-2">
-				<span>${userNickname}님, 안녕하세요!</span>
-				<a href="/user/sign-out" class="ml-2 font-weight-bold">로그아웃</a>
+			<div class="d-flex mr-2">
+				<a href="/user/data-modify-view" class="nickname">${userNickname}님</a>
+				<div class="verticalLine">|</div>
+				<a href="/user/sign-out" class="header-subject">로그아웃</a>
 			</div>
 		</c:if>
 		
 		<c:if test="${empty userId}">
 			<div class="mr-2">
-				<a href="/user/sign-in-view" class="ml-2 font-weight-bold">로그인</a>
+				<a href="/user/sign-in-view" class="header-subject">로그인</a>
 			</div>
 		</c:if>
 	</div>

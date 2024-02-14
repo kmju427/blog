@@ -20,7 +20,7 @@ header {height:50px; background-color:#FFFF96;}
 	background-color:#FDF5E6;
 	border-radius: 30px;
 }
-.sign-up-subject {margin:20px; font-weight:bold;}
+.sign-up-subject, .modify-subject {margin:20px; font-weight:bold;}
 
 .sign-in-box {
 	width:650px; 
@@ -41,5 +41,7 @@ header {height:50px; background-color:#FFFF96;}
 .login {margin:auto; text-align:center;}
 
 #loginIdCheckBtn, #nicknameCheckBtn {background-color:#4BAF4B; color:white;}
-#signUpBtn {background-color:#0078FF; color:white;}
-#loginBtn {background-color:#0078FF; color:white;}
+#signUpBtn, #loginBtn, #dataModifyBtn {background-color:#0078FF; color:white;}
+
+.nickname, .header-subject{color:#828282; font-weight:bold;}
+.verticalLine{color:#b4b4b4; margin-left:10px; margin-right:10px;}
