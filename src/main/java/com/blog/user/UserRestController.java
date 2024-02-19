@@ -138,6 +138,7 @@ public class UserRestController {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userName", user.getName());
+			session.setAttribute("userEmail", user.getEmail());
 			session.setAttribute("userNickname", user.getNickname());
 			
 			result.put("code", 200);
@@ -152,17 +153,20 @@ public class UserRestController {
 	
 	@PostMapping("/data-modify")
 	public Map<String, Object> dataModify(
-			@RequestParam("password") String password,
-			@RequestParam("email") String email,
-			@RequestParam("nickname") String nickname,
+			@RequestParam(value = "password", required = false) String password,
+			@RequestParam(value = "email", required = false) String email,
+			@RequestParam(value = "nickname", required = false) String nickname,
 			@RequestParam(value = "file", required = false) MultipartFile file,
 			HttpSession session) {
 		// 세션에서 필요한 데이터 꺼내기
 		int userId = (int)session.getAttribute("userId");
 		String userLoginId = (String)session.getAttribute("userLoginId");
 		
+		// md5 알고리즘 -> password hashing
+		String hashedPassword = EncryptUtils.md5(password);
+		
 		// DB update
-		// userBO.;
+		userBO.updateUserEntityById(userId, userLoginId, hashedPassword, email, nickname, file);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);

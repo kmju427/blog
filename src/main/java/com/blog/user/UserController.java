@@ -44,6 +44,7 @@ public class UserController {
 		session.removeAttribute("userId");
 		session.removeAttribute("userLoginId");
 		session.removeAttribute("userName");
+		session.removeAttribute("userEmail");
 		session.removeAttribute("userNickname");
 		
 		// redirect - 로그인 화면으로 이동

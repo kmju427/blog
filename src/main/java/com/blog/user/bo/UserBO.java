@@ -60,19 +60,26 @@ public class UserBO {
 	
 	// 회원정보 수정
 	// input : password, email, nickname, file / output : X
-	public void updateUserById(int userId, String userLoginId, String password, String email, String nickname, MultipartFile file) {
-		// 파일이 있을 경우
-		// 새 이미지를 업로드하고, 기존 이미지 제거(기존 이미지가 있다면)
+	public void updateUserEntityById(int userId, String userLoginId, String password, String email, String nickname, MultipartFile file) {
+		// 프로필 이미지가 없을 경우, 등록한 이미지 업로드
 		String imagePath = null;
 		
 		if (file != null) {
 			// 업로드
 			imagePath = fileManegerService.saveFile(userLoginId, file);
+		}
+		
+		UserEntity user = userRepository.findById(userId).orElse(null);
+		
+		if (user != null) {
+			user = user.toBuilder()
+					.password(password == null ? user.getPassword() : password)
+					.email(email == null ? user.getEmail() : email)
+					.nickname(nickname == null ? user.getNickname() : nickname)
+					.profileImagePath(imagePath == null ? user.getProfileImagePath() : imagePath)
+					.build();
 			
-			// 업로드 성공 시 기존 이미지가 있으면 제거
-//			if (imagePath != null && ) {
-//				
-//			}
+			user = userRepository.save(user);
 		}
 	}
 	

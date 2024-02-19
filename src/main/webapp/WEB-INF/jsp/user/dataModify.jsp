@@ -46,12 +46,12 @@
 			
 			<span class="modify-subject">이메일</span>
 			<div class="ml-3 mt-2 mb-2">
-				<input type="text" name="email" class="form-control col-7" placeholder="이메일을 입력해주세요.">
+				<input type="text" name="email" class="form-control col-7" placeholder="${userEmail}">
 			</div>
 			
 			<span class="modify-subject">닉네임</span>
 			<div class="d-flex ml-3 mt-2 mb-2">
-				<input type="text" name="nickname" class="form-control col-7" placeholder="닉네임을 입력해주세요.">
+				<input type="text" name="nickname" class="form-control col-7" placeholder="${userNickname}">
 				<button type="button" id="nicknameCheckBtn" class="btn ml-2">중복 확인</button>
 			</div>
 			
@@ -146,23 +146,31 @@
 			let nickname = $("input[name=nickname]").val().trim();
 			let fileName = $("#file").val();
 			
-			if (!password || !confirmPassword) {
-				alert("비밀번호를 입력해주세요.");
-				return false;
+			if (password || confirmPassword) {
+				if (!password || !confirmPassword) {
+					alert("비밀번호를 입력해주세요.");
+					return false;
+				}
 			}
 			
-			if (password != confirmPassword) {
-				alert("비밀번호가 일치하지 않습니다.");
-				return false;
+			if (password || confirmPassword) {
+				if (password != confirmPassword) {
+					alert("비밀번호가 일치하지 않습니다.");
+					return false;
+				}
 			}
 			
-			if (!email) {
-				alert("이메일을 입력해주세요.");
-				return false;
+			if (email) {
+				if (!email) {
+					alert("이메일을 입력해주세요.");
+					return false;
+				}
 			}
 			
-			if (!nickname) {
-				alert("닉네임을 입력해주세요.");
+			if (nickname) {
+				if (!nickname) {
+					alert("닉네임을 입력해주세요.");
+				}
 			}
 			
 			// 파일이 업로드된 경우에만 확장자 체크
@@ -199,7 +207,7 @@
 				, success:function(data) {
 					if (data.code == 200) {
 						alert("회원정보 수정이 완료되었습니다.");
-						location.href = "/post/post-list-view"; // 게시글(전체목록) 화면으로 이동
+						location.href = "/user/data-modify-view"; // 회원정보 수정 화면으로 이동
 					} else if (data.code == 500) {
 						alert(data.error_message);
 					}
