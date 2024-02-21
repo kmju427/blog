@@ -80,17 +80,6 @@ public class UserBO {
 			}
 		}
 		
-//		if (user != null) {
-//			user = user.toBuilder()
-//					.password(password == null ? user.getPassword() : password)
-//					.email(email == null ? user.getEmail() : email)
-//					.nickname(nickname == null ? user.getNickname() : nickname)
-//					.profileImagePath(imagePath == null ? user.getProfileImagePath() : imagePath)
-//					.build();
-//			
-//			user = userRepository.save(user);
-//		}
-		
 		if (user != null) {
 			user = user.toBuilder()
 					.password(password == null ? user.getPassword() : password)
