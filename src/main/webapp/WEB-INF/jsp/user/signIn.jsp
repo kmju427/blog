@@ -18,6 +18,7 @@
 			</div>
 				
 			<div class="d-flex justify-content-center m-3">
+				<a id="signUpBtn" class="btn mr-3" href="/user/sign-up-view">가입하기</a>
 				<button type="submit" id="loginBtn" class="btn">로그인</button>
 			</div>
 		</form>

@@ -140,6 +140,7 @@ public class UserRestController {
 			session.setAttribute("userName", user.getName());
 			session.setAttribute("userEmail", user.getEmail());
 			session.setAttribute("userNickname", user.getNickname());
+			session.setAttribute("userProfileImagePath", user.getProfileImagePath());
 			
 			result.put("code", 200);
 			result.put("result", "성공");

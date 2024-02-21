@@ -170,6 +170,7 @@
 			
 			// 유효성 통과한 이미지의 경우 파일명 노출
 			$("#fileName").text(fileName);
+			$("#profileImage").attr({src:fileName});
 		});
 		
 		// 회원가입

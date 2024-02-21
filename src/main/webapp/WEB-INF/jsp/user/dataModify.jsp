@@ -17,7 +17,7 @@
 						<a href="#" id="fileUploadBtn" class="mt-2 mb-2"><img id="profileImage" width="65" src="https://cdn.pixabay.com/photo/2017/07/11/13/56/user-2493635_1280.png"></a>
 						
 						<%-- 업로드된 임시 이미지 파일 이름 나타내는 곳 --%>
-						<div id="fileName" class="ml-2"></div>
+						<div id="fileName" class="ml-2">${userProfileImagePath}</div>
 					</div>
 				</div>
 			</div>
@@ -145,33 +145,6 @@
 			let email = $("input[name=email]").val().trim();
 			let nickname = $("input[name=nickname]").val().trim();
 			let fileName = $("#file").val();
-			
-			if (password || confirmPassword) {
-				if (!password || !confirmPassword) {
-					alert("비밀번호를 입력해주세요.");
-					return false;
-				}
-			}
-			
-			if (password || confirmPassword) {
-				if (password != confirmPassword) {
-					alert("비밀번호가 일치하지 않습니다.");
-					return false;
-				}
-			}
-			
-			if (email) {
-				if (!email) {
-					alert("이메일을 입력해주세요.");
-					return false;
-				}
-			}
-			
-			if (nickname) {
-				if (!nickname) {
-					alert("닉네임을 입력해주세요.");
-				}
-			}
 			
 			// 파일이 업로드된 경우에만 확장자 체크
 			if (fileName) {
