@@ -61,13 +61,13 @@ public class UserBO {
 	// 회원정보 수정
 	// input : password, email, nickname, file / output : X
 	public void updateUserEntityById(int userId, String userLoginId, String password, String email, String nickname, MultipartFile file) {
-		// 회원정보 수정을 위해 기존 회원의 정보를 가져온다.
-		UserEntity user = userRepository.findById(userId).orElse(null);
-		
 		// 파일이 있다면
 		// 1. 새 이미지를 업로드한다.
 		// 2. 1번 단계가 성공하면 기존 이미지 제거(기존 이미지가 있다면)
 		String imagePath = null;
+		
+		// 회원정보 수정을 위해 기존 회원의 정보를 가져온다.
+		UserEntity user = userRepository.findById(userId).orElse(null);
 		
 		if (file != null) {
 			// 업로드

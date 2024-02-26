@@ -45,3 +45,7 @@ header {height:50px; background-color:#FFFF96;}
 
 .nickname, .header-subject{color:#828282; font-weight:bold;}
 .verticalLine{color:#b4b4b4; margin-left:10px; margin-right:10px;}
+
+.post-list {width:100%; min-height:500px;}
+.post-left {width:20%; background-color:yellow;}
+.post-right {width:80%; background-color:green;}

@@ -10,4 +10,22 @@
 		FROM
 			`post`
 	</select>
+	
+	<!-- 로그인된 사람의 글 목록 -->
+	<select id="selectPostListByUserId" parameterType="int" resultType="com.blog.post.domain.Post">
+		SELECT
+			`id`
+			,`userId`
+			,`categoryId`
+			,`openType`
+			,`subject`
+			,`content`
+			,`imagePath`
+			,`createdAt`
+			,`updatedAt`
+		FROM
+			`post`
+		WHERE
+			`userId` = #{userId}
+	</select>
 </mapper>

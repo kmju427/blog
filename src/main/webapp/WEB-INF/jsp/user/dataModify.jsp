@@ -24,6 +24,7 @@
 		</div>
 		<hr>
 		<form id="dataModifyForm" method="post" action="/user/data-modify">
+			<input type="hidden" name="_method" value="put" />
 			<span class="modify-subject">아이디</span>
 			<div class="d-flex ml-3 mt-2 mb-2">
 				<input type="text" id="loginId" name="loginId" class="form-control col-7" placeholder="${userLoginId}" disabled>
@@ -146,6 +147,16 @@
 			let nickname = $("input[name=nickname]").val().trim();
 			let fileName = $("#file").val();
 			
+			if (password || confirmPassword) {
+				alert("비밀번호를 입력해주세요.");
+				return false;
+			}
+			
+			if (password != confirmPassword) {
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+			
 			// 파일이 업로드된 경우에만 확장자 체크
 			if (fileName) {
 				// C:\fakepath\cortina-dampezzo-8504755_640.jpg
@@ -169,7 +180,7 @@
 			
 			$.ajax({
 				// request
-				type:"POST"
+				type:"PUT"
 				, url:"/user/data-modify"
 				, data:formData
 				, enctype:"multipart/form-data" // 파일 업로드를 위한 필수 설정
